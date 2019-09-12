@@ -12,8 +12,7 @@ public class StockUtil {
 		return stockInfo -> stockInfo.price < price;
 	}
 
-	public static StockInfo pickHigh(final StockInfo stockInfo1,
-			final StockInfo stockInfo2) {
+	public static StockInfo pickHigh(final StockInfo stockInfo1, final StockInfo stockInfo2) {
 		return stockInfo1.price > stockInfo2.price ? stockInfo1 : stockInfo2;
 	}
 
@@ -43,4 +42,5 @@ public class StockUtil {
 
 		}
 	};
+
 }
