@@ -11,3 +11,4 @@ public class TimeIt {
 		}
 	}
 }
+// Copyright Nikola Mircic 2019

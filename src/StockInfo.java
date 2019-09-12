@@ -13,3 +13,4 @@ public class StockInfo {
 		return ticker + " " + price + ", ";
 	}
 }
+// Copyright Nikola Mircic 2019

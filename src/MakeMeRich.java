@@ -51,45 +51,49 @@ public class MakeMeRich {
 		File[] listOfFiles = folder.listFiles();
 
 		for (int i = 0; i < listOfFiles.length; i++) {
-			FileUtils.write(listOfFiles[i], "UTF-8", "// Copyright Nikola Mircic 2019");
+			String currentFile = FileUtils.readFileToString(listOfFiles[i], "UTF-8");
+			if (!currentFile.contains("Copyright")) {
+				FileUtils.write(listOfFiles[i], "// Copyright Nikola Mircic 2019", "UTF-8", true);
+			}
 		}
 
-		getCryptoPrice();
+		// cryptocurrency API
+
+		Scanner scanner = new Scanner(System.in);
+		String cryptoName = "";
+		String currency = "";
+		System.out.println("Tracked cryptos: " + cryptoList.toString() + "\nPlease enter desired crypto:");
+		cryptoName = scanner.nextLine();
+		System.out.println("Tracked currencies: " + currencyList.toString() + "\nPlease enter desired currency:");
+		currency = scanner.nextLine();
+		scanner.close();
+
+		getCryptoPrice(cryptoName, currency);
 	}
 
-	private static void getCryptoPrice() throws MalformedURLException, IOException {
-		Scanner scanner = new Scanner(System.in);
+	private static void getCryptoPrice(String crypto, String currency) throws MalformedURLException, IOException {
+
 		Date date = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
 		String rootURL = "https://min-api.cryptocompare.com/data/pricemulti?fsyms=";
-		String cryptoName = "";
-		String currency = "";
 		String cryptoPrice;
-
-		System.out.println("Tracked cryptos: " + cryptoList.toString() + "\nPlease enter desired crypto:");
-		String userEnteredCrypto = scanner.nextLine();
-		System.out.println("Tracked currencies: " + currencyList.toString() + "\nPlease enter desired currency:");
-		String userEnteredCurrency = scanner.nextLine();
-
-		if (!cryptoList.contains(userEnteredCrypto)) {
+		if (!cryptoList.contains(crypto)) {
 			System.out.println("Untracked crypto.");
 		} else {
-			cryptoName = userEnteredCrypto;
-			if (!currencyList.contains(userEnteredCurrency)) {
+			if (!currencyList.contains(currency)) {
 				System.out.println("Untracked currency.");
 			} else {
-				currency = userEnteredCurrency;
-				rootURL += cryptoName + "&tsyms=" + currency + API_KEY;
+				rootURL += crypto + "&tsyms=" + currency + API_KEY;
 				URL request = new URL(rootURL);
 				String response = IOUtils.toString(request.openStream(), "UTF-8");
 				JSONObject root = new JSONObject(response);
-				JSONObject body = (JSONObject) root.get(cryptoName);
+				JSONObject body = (JSONObject) root.get(crypto);
 				cryptoPrice = body.toString().replaceAll("[{}USD:EUR]", "").replace("\"", "");
-				System.out.println("Price for " + cryptoName + " on date " + formatter.format(date) + " in " + currency + " is " + cryptoPrice + ".");
+				System.out.println("Price for " + crypto + " on date " + formatter.format(date) + " in " + currency + " is " + cryptoPrice + ".");
 			}
 		}
-		scanner.close();
+
 	}
 
 	private static String findStockNameByPrice(Map<String, Double> map, double stockPrice) {
@@ -100,3 +104,4 @@ public class MakeMeRich {
 	}
 
 }
+// Copyright Nikola Mircic 2019

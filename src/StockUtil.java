@@ -44,3 +44,4 @@ public class StockUtil {
 	};
 
 }
+// Copyright Nikola Mircic 2019
